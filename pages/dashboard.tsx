@@ -1,10 +1,33 @@
 import { Table } from "@/components/ui/table";
+import Image from "next/image";
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import { CalendarDateRangePicker } from "@/components/dashboard/date-range-picker"
+import { MainNav } from "@/components/dashboard/main-nav"
+import { Overview } from "@/components/dashboard/overview"
+import { RecentSales } from "@/components/dashboard/recent-sales"
+import { Search } from "@/components/dashboard/search"
+import TeamSwitcher from "@/components/dashboard/team-switcher"
+import { UserNav } from "@/components/dashboard/user-nav"
+
 
 const Dashboard = () => {
   return (
     <>
       <div className="md:hidden">
-        <Image
+        {/* <Image
           src="/examples/dashboard-light.png"
           width={1280}
           height={866}
@@ -17,7 +40,7 @@ const Dashboard = () => {
           height={866}
           alt="Dashboard"
           className="hidden dark:block"
-        />
+        /> */}
       </div>
       <div className="hidden flex-col md:flex">
         <div className="border-b">
