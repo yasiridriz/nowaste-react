@@ -46,26 +46,36 @@ const Layout = ({ children }: PropsWithChildren) => {
         setGeolocation(position.coords);
         const address = await getCoordinatesToAddress(position.coords.latitude, position.coords.longitude);
         const addres = address.Results[0].address;
+        const latt = address.Results[0].latitude;
+        const longg = address.Results[0].longitude;
+        const city = address.Results[0].subregion;
         setLocale(addres);
   
         console.log('Address:', address);
         console.log(addres);
+        const axios = require('axios');
+
         const options = {
           method: 'GET',
           url: 'https://the-fork-the-spoon.p.rapidapi.com/restaurants/v2/auto-complete',
-          params: { text: address },
+          params: {
+            text: city,
+            latitude: latt,
+            longitude: longg,
+          },
           headers: {
             'X-RapidAPI-Key': '090cd72862msh625177d2792eaf9p15b7b1jsndadbf6a4b3c6',
             'X-RapidAPI-Host': 'the-fork-the-spoon.p.rapidapi.com'
           }
         };
-
+        
         try {
           const response = await axios.request(options);
-          console.log('Restaurants:', response.data);
+          console.log(response.data);
         } catch (error) {
           console.error(error);
         }
+      
       });
     } else {
       setGeolocation(null);
