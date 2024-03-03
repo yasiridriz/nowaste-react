@@ -72,6 +72,12 @@ const Layout = ({ children }: PropsWithChildren) => {
         try {
           const response = await axios.request(options);
           console.log(response.data);
+          const restaurants  = response.data.autocomplete;
+          restaurants.forEach(item => {
+            if (item.name && item.name.text) {
+              console.log(item.name.text);
+            }
+          });
         } catch (error) {
           console.error(error);
         }
