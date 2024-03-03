@@ -27,7 +27,9 @@ export default function Home() {
   );
   const [location, setLocation] = useState<any>();
   const [locale, setLocale] = useState<any>();
+  const [winningRestaurant, setWinningRestaurant] = useState<any>();
   const [restaurants, setRestaurants] = useState<any[]>();
+  const [restaurantLocations, setRestaurantLocations] = useState<any>();
   const [city, setCity] = useState<any>("");
 
   const position = async () => {
@@ -56,6 +58,10 @@ export default function Home() {
 
   const onFinished = (winner: any) => {
     console.log(winner);
+    let winn = restaurantLocations.find((r: any) => r.name === winner);
+
+    setWinningRestaurant(winn);
+    console.log(winn);
   };
 
   const getCoordinatesToAddress = async (
@@ -144,6 +150,7 @@ export default function Home() {
                 .request(roptions)
                 .then((restaurants) => {
                   console.log(restaurants.data);
+                  setRestaurantLocations(restaurants.data.data);
                   setRestaurants(restaurants.data.data.map((r: any) => r.name));
                   setIsLoading(false);
                 })
@@ -165,45 +172,68 @@ export default function Home() {
   return (
     <div className="w-full">
       {/* {!location && ( */}
-      <h1 className="text-[6em] text-center font-bold my-6">
+      <h1 className="lg:text-[6em] text-4xl text-center font-bold my-10">
         DineByChance
       </h1>
-        <div className="w-full">
-          Type in your city
-          <div className="flex gap-2 justify-between my-2">
-            <Input
-              onChange={(e) => setCity(e.target.value)}
-              type="text"
-              className="w-full"
-              placeholder="Your city"
-              required
-            />
-            <Button
-              onClick={handleSearch}
-              disabled={isLoading || !(city.length > 0)}
-            >
-              Search
-            </Button>
-          </div>
-          {isLoading && <p>Loading...</p>}
-        </div>
-      {/* )} */}
-      <div className="overflow-x-hidden pl-1">
-        {restaurants && (
-          <WheelComponent
-            segments={restaurants}
-            segColors={segColors}
-            onFinished={(winner: any) => onFinished(winner)}
-            primaryColor="black"
-            contrastColor="white"
-            buttonText="Spin"
-            className="p-0"
-            isOnlyOnce={false}
-            upDuration={100}
-            downDuration={1000}
-            fontFamily="Arial"
+      <div className="w-full max-w-xl mx-auto mb-20">
+        Type in your city
+        <div className="flex gap-2 justify-between my-2">
+          <Input
+            onChange={(e) => setCity(e.target.value)}
+            type="text"
+            className="w-full"
+            placeholder="Your city"
+            required
           />
-        )}
+          <Button
+            onClick={handleSearch}
+            disabled={isLoading || !(city.length > 0)}
+          >
+            Search
+          </Button>
+        </div>
+        {isLoading && <p>Loading...</p>}
+      </div>
+      {/* )} */}
+      <div className="overflow-x-hidden pl-1 flex justify-center items-center">
+        <div className="w-1/2">
+          {restaurants && (
+            <WheelComponent
+              segments={restaurants}
+              segColors={segColors}
+              onFinished={(winner: any) => onFinished(winner)}
+              primaryColor="black"
+              contrastColor="white"
+              buttonText="Spin"
+              className="p-0"
+              isOnlyOnce={true}
+              upDuration={100}
+              downDuration={1000}
+              fontFamily="Arial"
+            />
+          )}
+        </div>
+        <div className="w-1/2">
+          {winningRestaurant && (
+            <div className="mb-10">
+              <p className="text-xl">
+                {winningRestaurant.address.street},{" "}
+                {winningRestaurant.address.postalCode},{" "}
+                {winningRestaurant.address.locality}
+              </p>
+              <h1 className="text-2xl">
+                <a
+                  className="text-blue-500 hover:text-blue-700"
+                  target="_blank"
+                  href={`https://www.google.com/maps/place/${winningRestaurant.geo.latitude},${winningRestaurant.geo.longitude}`}
+                >
+                  Find on Google Maps
+                </a>
+              </h1>
+              <img src={winningRestaurant.mainPhotoSrc} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
