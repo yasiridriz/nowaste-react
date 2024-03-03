@@ -21,6 +21,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         <Link href={"/dashboard"}>Dashboard</Link>
         <Link href={"/about"}>Who are we?</Link>
       </div>
+
       <main className="px-[15vw] pt-20">
         <h1>HTML Geolocation</h1>
 
@@ -42,15 +43,15 @@ const Layout = ({ children }: PropsWithChildren) => {
             setGeolocation(null);
           }
 
-          const API_KEY = 'YOUR_API_KEY'; // Replace with your actual API key
+          const API_KEY = '090cd72862msh625177d2792eaf9p15b7b1jsndadbf6a4b3c6'; // Replace with your actual API key
           const API_URL = 'https://apishub.com/api/address-from-to-latitude-longitude';
 
-          async function getCoordinatesToAddress(latitude, longitude) {
+          async function getCoordinatesToAddress(geolocation.latitude, geolocation.longitude) {
             try {
               const response = await axios.get(API_URL, {
                 params: {
-                  lat: latitude,
-                  lon: longitude,
+                  lat: Latitude,
+                  lon: Longitude,
                   apiKey: API_KEY,
                 },
               });
@@ -64,17 +65,14 @@ const Layout = ({ children }: PropsWithChildren) => {
           }
 
           // Example usage:
-          getCoordinatesToAddress(//LATITUDE, LONGITUDE); // Replace with the found coordinates
+          getCoordinatesToAddress({Latitude}, {Longitude}); // Replace with the found coordinates
 
           const axios = require('axios');
 
           const options = {
             method: 'GET',
-            url: 'https://the-fork-the-spoon.p.rapidapi.com/sale-type-menu/list',
-            params: {
-              id_restaurant: '522995',
-              locale: 'en_US'
-            },
+            url: 'https://the-fork-the-spoon.p.rapidapi.com/restaurants/v2/auto-complete',
+            params: {text: {response}},
             headers: {
               'X-RapidAPI-Key': '090cd72862msh625177d2792eaf9p15b7b1jsndadbf6a4b3c6',
               'X-RapidAPI-Host': 'the-fork-the-spoon.p.rapidapi.com'
@@ -99,3 +97,4 @@ const Layout = ({ children }: PropsWithChildren) => {
 };
 
 export default Layout;
+ 
