@@ -6,6 +6,7 @@ import axios from 'axios';
 const Layout = ({ children }: PropsWithChildren) => {
   const [geolocation, setGeolocation] = useState<GeolocationCoordinates | null>(null);
   const [locale, setLocale] = useState<string>("");
+  const [restaurants, setRestaurants] = useState<any[]>([]);
 
   // useEffect(() => {
   //   if (navigator.geolocation) {
@@ -16,7 +17,6 @@ const Layout = ({ children }: PropsWithChildren) => {
   // }, []);
 
   const getCoordinatesToAddress = async (latitude : number, longitude : number) => {
-    const axios = require('axios');
     const options = {
       method: 'GET',
       url: 'https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi',
@@ -42,7 +42,10 @@ const Layout = ({ children }: PropsWithChildren) => {
 
   const handleTryIt = async () => {
     if (navigator.geolocation) {
+
       navigator.geolocation.getCurrentPosition(async (position) => {
+        console.log('navigator.geolocation: ',  position )
+
         setGeolocation(position.coords);
         const address = await getCoordinatesToAddress(position.coords.latitude, position.coords.longitude);
         const addres = address.Results[0].address;
@@ -53,7 +56,6 @@ const Layout = ({ children }: PropsWithChildren) => {
   
         console.log('Address:', address);
         console.log(addres);
-        const axios = require('axios');
 
         const options = {
           method: 'GET',
@@ -73,7 +75,7 @@ const Layout = ({ children }: PropsWithChildren) => {
           const response = await axios.request(options);
           console.log(response.data);
           const restaurants  = response.data.autocomplete;
-          restaurants.forEach(item => {
+          restaurants.forEach((item: any) => {
             if (item.name && item.name.text) {
               console.log(item.name.text);
             }
@@ -112,7 +114,15 @@ const Layout = ({ children }: PropsWithChildren) => {
 
         <button onClick={handleTryIt}>Try It</button>
 
-        <div id="demo"></div>
+        <div id="demo">
+          {restaurants.map((r: any) => {
+            return (
+              <div>
+                {r}
+              </div>
+            )
+          })}
+        </div>
 
         {children}
       </main>
