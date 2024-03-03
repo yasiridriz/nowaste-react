@@ -10,7 +10,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 
   return (
     <div>
-      <main className="mx-auto pt-20 px-3 max-h-[100dvh] overflow-y-hidden flex justify-center items-center max-w-xl">
+      <main className="mx-auto px-3 max-h-[100dvh] overflow-y-hidden flex justify-center items-center max-w-xl">
         {children}
       </main>
     </div>

@@ -164,7 +164,10 @@ export default function Home() {
 
   return (
     <div className="w-full">
-      {!location && (
+      {/* {!location && ( */}
+      <h1 className="text-[6em] text-center font-bold my-6">
+        DineByChance
+      </h1>
         <div className="w-full">
           Type in your city
           <div className="flex gap-2 justify-between my-2">
@@ -184,7 +187,7 @@ export default function Home() {
           </div>
           {isLoading && <p>Loading...</p>}
         </div>
-      )}
+      {/* )} */}
       <div className="overflow-x-hidden pl-1">
         {restaurants && (
           <WheelComponent
