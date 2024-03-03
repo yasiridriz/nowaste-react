@@ -6,35 +6,36 @@ import axios from 'axios';
 const Layout = ({ children }: PropsWithChildren) => {
   const [geolocation, setGeolocation] = useState<GeolocationCoordinates | null>(null);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setGeolocation(position.coords);
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       setGeolocation(position.coords);
+  //     });
+  //   }
+  // }, []);
 
   const getCoordinatesToAddress = async (latitude : number, longitude : number) => {
-    const API_KEY = '090cd72862msh625177d2792eaf9p15b7b1jsndadbf6a4b3c6'; // Replace with your actual API key
-    const API_URL = 'https://apishub.com/api/address-from-to-latitude-longitude';
+    const axios = require('axios');
+    const options = {
+      method: 'GET',
+      url: 'https://address-from-to-latitude-longitude.p.rapidapi.com/geolocationapi',
+      params: {
+        lat: latitude,
+        lng: longitude,
+      },
+      headers: {
+        'X-RapidAPI-Key': '090cd72862msh625177d2792eaf9p15b7b1jsndadbf6a4b3c6',
+        'X-RapidAPI-Host': 'address-from-to-latitude-longitude.p.rapidapi.com'
+      }
+     };
 
-    try {
-      const response = await axios.get(API_URL, {
-        params: {
-          lat: latitude,
-          lon: longitude,
-          apiKey: API_KEY,
-        },
-      });
-
-      const address = response.data.address;
-      console.log('Converted address:', address);
-      return address;
-    } catch (error) {
-      console.error('Error converting coordinates to address:', (error as Error).message);
-
-    }
-  };
+      try {
+        const response = await axios.request(options);
+        console.log(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+        };
 
   const handleTryIt = async () => {
     if (navigator.geolocation) {
@@ -97,3 +98,4 @@ const Layout = ({ children }: PropsWithChildren) => {
 };
 
 export default Layout;
+
