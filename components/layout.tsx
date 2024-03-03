@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const Layout = ({ children }: PropsWithChildren) => {
   const [geolocation, setGeolocation] = useState<GeolocationCoordinates | null>(null);
+  const [locale, setLocale] = useState<string>("");
 
   // useEffect(() => {
   //   if (navigator.geolocation) {
@@ -32,18 +33,23 @@ const Layout = ({ children }: PropsWithChildren) => {
       try {
         const response = await axios.request(options);
         console.log(response.data);
+        return response.data;
       } catch (error) {
         console.error(error);
       }
-        };
+      
+    };
 
   const handleTryIt = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         setGeolocation(position.coords);
         const address = await getCoordinatesToAddress(position.coords.latitude, position.coords.longitude);
+        const addres = address.Results[0].address;
+        setLocale(addres);
+  
         console.log('Address:', address);
-
+        console.log(addres);
         const options = {
           method: 'GET',
           url: 'https://the-fork-the-spoon.p.rapidapi.com/restaurants/v2/auto-complete',
@@ -56,7 +62,7 @@ const Layout = ({ children }: PropsWithChildren) => {
 
         try {
           const response = await axios.request(options);
-          console.log(response.data);
+          console.log('Restaurants:', response.data);
         } catch (error) {
           console.error(error);
         }
@@ -86,6 +92,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         ) : (
           <p>Click the button to get your coordinates.</p>
         )}
+        <p> You address is : {locale} </p>
 
         <button onClick={handleTryIt}>Try It</button>
 
