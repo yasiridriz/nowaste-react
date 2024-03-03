@@ -75,3 +75,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+canvas {
+  @apply w-[150dvw] md:w-[80dvw] lg:w-[50dvw] aspect-auto flex justify-center items-center mx-auto overflow-x-hidden;
+}
